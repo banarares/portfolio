@@ -16,7 +16,7 @@
     <?php endif; ?>
 
     <!-- OpenGraph -->
-    <meta property="og:type"  content="<?= htmlspecialchars($seo['og_type'] ?? 'website', ENT_QUOTES, 'UTF-8') ?>">
+    <meta property="og:type" content="<?= htmlspecialchars($seo['og_type'] ?? 'website', ENT_QUOTES, 'UTF-8') ?>">
     <meta property="og:title" content="<?= htmlspecialchars($seo['title'] ?? '', ENT_QUOTES, 'UTF-8') ?>">
     <?php if (!empty($seo['description'])): ?>
         <meta property="og:description" content="<?= htmlspecialchars($seo['description'], ENT_QUOTES, 'UTF-8') ?>">
@@ -38,6 +38,11 @@
         <meta name="twitter:image" content="<?= htmlspecialchars($seo['og_image'], ENT_QUOTES, 'UTF-8') ?>">
     <?php endif; ?>
 
+    <!-- Favicon -->
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="alternate icon" href="/favicon.ico" sizes="32x32">
+    <meta name="theme-color" content="#0e0f11">
+
     <link rel="stylesheet" href="/assets/css/app.css">
 </head>
 
@@ -46,7 +51,7 @@
         <header class="site-header">
             <div class="container header-inner">
                 <a href="/" class="logo">RB<span>.</span></a>
-                    
+
                 <nav class="nav" id="site-nav">
                     <a href="/#about">About</a>
                     <a href="/#projects">Projects</a>
@@ -92,7 +97,7 @@
 
     <!-- Cursor elements (pointer devices only) -->
     <div id="cursor-glow" aria-hidden="true"></div>
-    <div id="cursor-dot"  aria-hidden="true"></div>
+    <div id="cursor-dot" aria-hidden="true"></div>
     <div id="cursor-ring" aria-hidden="true"></div>
 </body>
 

@@ -52,11 +52,20 @@ document.addEventListener('DOMContentLoaded', () => {
         document.addEventListener('mouseenter', showCursor);
 
         // Ring lags with lerp — smooth trailing feel
+        // JS owns both position AND size so offset = size/2 is always in sync
+        let ringSize = 38;
+        const RING_DEFAULT = 38, RING_HOVER = 60;
+
         if (!reduce) {
             const animateRing = () => {
                 rx = lerp(rx, mx, 0.12);
                 ry = lerp(ry, my, 0.12);
-                cursorRing.style.transform = `translate(${rx - 19}px, ${ry - 19}px)`;
+                const targetSize = document.body.classList.contains('cursor-hover') ? RING_HOVER : RING_DEFAULT;
+                ringSize = lerp(ringSize, targetSize, 0.15);
+                const half = ringSize / 2;
+                cursorRing.style.width  = `${ringSize}px`;
+                cursorRing.style.height = `${ringSize}px`;
+                cursorRing.style.transform = `translate(${rx - half}px, ${ry - half}px)`;
                 requestAnimationFrame(animateRing);
             };
             animateRing();

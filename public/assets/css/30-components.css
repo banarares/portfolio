@@ -56,10 +56,7 @@
     z-index: 9998;
     will-change: transform;
     opacity: 0;
-    transition: width 280ms cubic-bezier(.2,.8,.2,1),
-                height 280ms cubic-bezier(.2,.8,.2,1),
-                border-color 280ms ease,
-                opacity 400ms ease;
+    transition: border-color 280ms ease, opacity 400ms ease;
 }
 
 /* Ripple — spawned on click */
@@ -104,15 +101,11 @@ body.cursor-hover #cursor-dot {
 }
 
 body.cursor-hover #cursor-ring {
-    width: 60px;
-    height: 60px;
     border-color: rgba(92, 140, 255, 0.65);
 }
 
 /* Logo */
-.logo {
-    font-size: 1.1rem;
-    font-weight: 700;
+/* .logo {
     letter-spacing: -0.03em;
     color: var(--text-primary);
     transition: opacity var(--transition-fast);
@@ -125,7 +118,7 @@ body.cursor-hover #cursor-ring {
 
 .logo span {
     color: var(--accent);
-}
+} */
 
 /* Buttons */
 .btn {
@@ -343,9 +336,11 @@ body.cursor-hover #cursor-ring {
 
 /* Logo */
 .logo {
-    font-weight: 600;
-    font-size: 1.2rem;
+    font-size: 2rem;
+    font-weight: 800;
+    line-height: 1;
     color: var(--text-primary);
+    margin: 0 var(--space-sm);
 }
 
 .logo span {

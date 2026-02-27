@@ -21,12 +21,12 @@
         <div class="about-detail">
             <div class="about-columns">
                 <div>
-                    <h3>What I Build</h3>
+                    <h2>What I Build</h2>
                     <p>Production-grade systems including subscription platforms, e-commerce solutions, APIs and custom web applications.</p>
                 </div>
 
                 <div>
-                    <h3>How I Work</h3>
+                    <h2>How I Work</h2>
                     <p>Clean architecture, database optimization, and secure integration design.</p>
                 </div>
             </div>
