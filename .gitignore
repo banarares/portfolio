@@ -1,0 +1,19 @@
+.env
+/vendor/
+
+# Uploaded files – never commit user content
+/public/uploads/**
+!/public/uploads/**/.gitkeep
+
+# Runtime storage – ignore generated files, keep directory stubs
+/storage/cache/*
+/storage/rate_limit/*
+/storage/logs/*
+!/storage/cache/.gitkeep
+!/storage/rate_limit/.gitkeep
+
+# Editor / tool config
+.vscode/
+.idea/
+.github/
+sftp.json

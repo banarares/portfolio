@@ -1,0 +1,21 @@
+.admin {
+    padding: var(--space-lg) 0;
+}
+
+.admin table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.admin th,
+.admin td {
+    padding: 0.8rem;
+    border-bottom: 1px solid var(--border-subtle);
+    text-align: left;
+    font-size: var(--fs-sm);
+}
+
+.admin th {
+    background: var(--bg-secondary);
+    font-weight: 500;
+}
