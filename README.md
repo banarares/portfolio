@@ -9,6 +9,9 @@
 [![Vanilla JS](https://img.shields.io/badge/JS-Vanilla-f59e0b?style=flat-square&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 [![License](https://img.shields.io/badge/License-MIT-22c55e?style=flat-square)](LICENSE)
 [![Hosted free on Anybusiness.ro](https://img.shields.io/badge/Hosted_free_on-Anybusiness.ro-5c8cff?style=flat-square)](https://anybusiness.ro)
+[![Live Demo](https://img.shields.io/badge/Live_Demo-rares.anybusiness.ro-a855f7?style=flat-square)](https://rares.anybusiness.ro)
+
+**Live demo → [rares.anybusiness.ro](https://rares.anybusiness.ro)**
 
 *Hosted for free on [Anybusiness.ro](https://anybusiness.ro) — free PHP hosting with MySQL & no monthly fees.*
 

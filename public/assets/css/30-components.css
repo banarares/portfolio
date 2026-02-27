@@ -913,6 +913,7 @@ body.cursor-hover #cursor-ring {
     cursor: pointer;
     z-index: 1100;
     transition: border-color var(--transition-fast);
+    margin-right: var(--space-sm);
 }
 
 .nav-burger span {
