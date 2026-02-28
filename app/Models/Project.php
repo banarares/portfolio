@@ -23,6 +23,24 @@ class Project extends Model
         ->fetchAll();
     }
 
+    public function allPublishedByUserByTag(int $userId, string $tagSlug): array
+    {
+        return $this->query(
+            "SELECT p.*, c.name as category_name, c.slug as category_slug
+            FROM {$this->table} p
+            LEFT JOIN categories c ON p.category_id = c.id
+            INNER JOIN projects_tags pt ON pt.project_id = p.id
+            INNER JOIN tags t ON t.id = pt.tag_id
+            WHERE p.user_id = :user_id
+            AND p.deleted_at IS NULL
+            AND p.published_at IS NOT NULL
+            AND p.published_at <= NOW()
+            AND t.slug = :tag_slug
+            ORDER BY p.is_featured DESC, p.published_at DESC, p.created_at DESC",
+            ['user_id' => $userId, 'tag_slug' => $tagSlug]
+        )->fetchAll();
+    }
+
     public function findPublishedBySlug(int $userId, string $slug)
     {
         return $this->query(

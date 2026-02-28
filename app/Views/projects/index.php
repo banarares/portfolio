@@ -9,7 +9,7 @@
 
             <div class="tech-stack">
                 <?php foreach ($tags as $tag): ?>
-                    <button class="tag-filter"
+                    <button class="tag-filter<?= ($tagSlug ?? '') === $tag['slug'] ? ' active' : '' ?>"
                         data-tag="<?= htmlspecialchars($tag['slug'], ENT_QUOTES, 'UTF-8') ?>">
                         #<?= htmlspecialchars($tag['name'], ENT_QUOTES, 'UTF-8') ?>
                     </button>
@@ -50,16 +50,7 @@
             </div>
         <?php endif; ?>
 
-        <?php if ($totalPages > 1): ?>
-            <div id="load-more-sentinel"
-                data-has-more="<?= $page < $totalPages ? '1' : '0' ?>"
-                data-next-page="<?= $page + 1 ?>"
-                data-per-page="<?= $perPage ?>"
-                style="height: 1px;"></div>
-        <?php endif; ?>
     </div>
 </section>
 
 <?php require __DIR__ . '/../contact.php'; ?>
-
-<script src="/assets/js/projects-loadmore.js" defer></script>

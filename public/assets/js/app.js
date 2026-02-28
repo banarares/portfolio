@@ -180,13 +180,122 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Auto-apply tag from query param
-    const param = new URLSearchParams(window.location.search).get('tag');
-    if (param) {
-        const btn = document.querySelector(`.tag-filter[data-tag="${CSS.escape(param)}"]`);
-        if (btn) {
-            btn.click();
-            btn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    // ── Tag filtering ────────────────────────────────────────────────────────
+    const tagFilters   = document.querySelectorAll('.tag-filter');
+    const projectsList = document.getElementById('projects-list');
+
+    if (tagFilters.length && projectsList) {
+
+        function buildProjectCard(project) {
+            const card = document.createElement('a');
+            card.className = 'project-card';
+            card.href = '/project/' + encodeURIComponent(project.slug);
+
+            if (project.image_path) {
+                const imgWrap = document.createElement('div');
+                imgWrap.className = 'project-image';
+                const img = document.createElement('img');
+                img.src = project.image_path;
+                img.alt = '';
+                img.loading = 'lazy';
+                imgWrap.appendChild(img);
+                card.appendChild(imgWrap);
+            }
+
+            const content  = document.createElement('div');
+            content.className = 'project-content';
+
+            const topline  = document.createElement('div');
+            topline.className = 'project-topline';
+
+            const title = document.createElement('h3');
+            title.textContent = project.title;
+            topline.appendChild(title);
+
+            if (project.category_name) {
+                const badge = document.createElement('span');
+                badge.className = 'badge';
+                badge.textContent = project.category_name;
+                topline.appendChild(badge);
+            }
+
+            content.appendChild(topline);
+
+            if (project.summary) {
+                const p = document.createElement('p');
+                p.textContent = project.summary;
+                content.appendChild(p);
+            }
+
+            card.appendChild(content);
+            return card;
+        }
+
+        let activeTag = null;
+
+        async function applyTagFilter(tagSlug) {
+            // Toggle off when same tag clicked again
+            if (activeTag === tagSlug) {
+                const url = new URL(window.location.href);
+                url.searchParams.delete('tag');
+                window.location.href = url.toString();
+                return;
+            }
+
+            activeTag = tagSlug;
+
+            // Mark active button
+            tagFilters.forEach(b => b.classList.toggle('active', b.dataset.tag === tagSlug));
+
+            // Update URL without reload
+            const url = new URL(window.location.href);
+            url.searchParams.set('tag', tagSlug);
+            history.replaceState(null, '', url);
+
+            // Fade grid while loading
+            projectsList.style.transition = 'opacity 180ms ease';
+            projectsList.style.opacity = '0.35';
+
+            try {
+                const res = await fetch(`/?tag=${encodeURIComponent(tagSlug)}&ajax=1`);
+                if (!res.ok) throw new Error('Network error');
+                const data = await res.json();
+
+                // Rebuild grid
+                projectsList.innerHTML = '';
+                data.items.forEach((project) => {
+                    projectsList.appendChild(buildProjectCard(project));
+                });
+
+                projectsList.style.opacity = '1';
+
+                // Scroll projects section into view so the header stays visible
+                const section = document.getElementById('projects');
+                if (section) section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+            } catch (err) {
+                console.error('Tag filter error:', err);
+                projectsList.style.opacity = '1';
+            }
+        }
+
+        tagFilters.forEach(btn => {
+            btn.addEventListener('click', () => applyTagFilter(btn.dataset.tag));
+        });
+
+        // Auto-apply tag from query param on page load
+        const paramTag = new URLSearchParams(window.location.search).get('tag');
+        if (paramTag) {
+            const matchBtn = document.querySelector(`.tag-filter[data-tag="${CSS.escape(paramTag)}"]`);
+            if (matchBtn) {
+                // Server already rendered the filtered list — just restore client state
+                if (matchBtn.classList.contains('active')) {
+                    activeTag = paramTag;
+                } else {
+                    applyTagFilter(paramTag);
+                }
+            }
         }
     }
+
 });

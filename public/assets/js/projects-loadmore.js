@@ -9,9 +9,11 @@
         if (entries[0].isIntersecting && sentinel.dataset.hasMore === '1') {
             const nextPage = parseInt(sentinel.dataset.nextPage, 10);
             const perPage = parseInt(sentinel.dataset.perPage, 10);
+            const activeTag = new URLSearchParams(window.location.search).get('tag');
+            const tagQuery = activeTag ? `&tag=${encodeURIComponent(activeTag)}` : '';
 
             try {
-                const response = await fetch(`/projects?page=${nextPage}&perPage=${perPage}&ajax=1`);
+                const response = await fetch(`/?page=${nextPage}&perPage=${perPage}&ajax=1${tagQuery}`);
                 if (!response.ok) throw new Error('Network response was not ok');
 
                 const data = await response.json();

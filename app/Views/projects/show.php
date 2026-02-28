@@ -16,8 +16,6 @@
                          alt="<?= htmlspecialchars($project['title'], ENT_QUOTES, 'UTF-8') ?>"
                          decoding="async">
                 </div>
-            <?php else: ?>
-                <div class="case-cover case-cover-placeholder"></div>
             <?php endif; ?>
 
             <div class="case-head">

@@ -32,6 +32,15 @@ section[id] {
     padding-top: clamp(1.2rem, 3vh, 2.2rem);
 }
 
+/* On mobile the navbar takes slightly more visual space — give the projects
+   section a bigger scroll-margin so the "Selected Work" kicker is always
+   visible after tag-filter clicks trigger scrollIntoView. */
+@media (max-width: 700px) {
+    #projects.section {
+        scroll-margin-top: calc(var(--header-h) + 1.5rem);
+    }
+}
+
 .page-header {
     margin-bottom: var(--space-md);
     display: flex;

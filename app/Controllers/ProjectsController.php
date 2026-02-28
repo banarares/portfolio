@@ -16,38 +16,47 @@ final class ProjectsController
         $portfolioContext = new PortfolioContext();
 
         $page = max(1, (int)($_GET['page'] ?? 1));
-        $perPage = 6;
+        $perPage = 3;
+        $tagSlug = isset($_GET['tag']) ? trim($_GET['tag']) : '';
 
         $settings = $portfolioContext->settings;
-        $pager = (new Project())->paginatePublishedByUser($portfolioContext->userId, $page, $perPage);
+
+        if ($tagSlug !== '') {
+            // Tag filter: return ALL matching projects, no pagination
+            $filteredItems = (new Project())->allPublishedByUserByTag($portfolioContext->userId, $tagSlug);
+            $projects = $filteredItems;
+            $total = count($filteredItems);
+            $totalPages = 1;
+        } else {
+            $pager = (new Project())->paginatePublishedByUser($portfolioContext->userId, $page, $perPage);
+            $projects = $pager['items'];
+            $total = $pager['total'];
+            $totalPages = (int)$pager['totalPages'];
+        }
 
         if (isset($_GET['ajax']) && $_GET['ajax'] === '1') {
             header('Content-Type: application/json');
-            $totalPages = (int)$pager['totalPages'];
             echo json_encode([
-                'items' => $pager['items'],
+                'items' => $projects,
                 'page' => $page,
                 'perPage' => $perPage,
-                'total' => $pager['total'],
+                'total' => $total,
                 'totalPages' => $totalPages,
-                'hasMore' => $page < $totalPages,
+                'hasMore' => $tagSlug !== '' ? false : ($page < $totalPages),
                 'nextPage' => $page + 1,
+                'tagSlug' => $tagSlug,
             ]);
             return;
         }
 
-        $projects = $pager['items'];
-        $total = $pager['total'];
-        $totalPages = (int)$pager['totalPages'];
-
-        $tags = (new Tag())->allByUser($portfolioContext->userId);
+        $tags = (new Tag())->allUsedByUser($portfolioContext->userId);
 
         $seo = SeoService::page($settings, [
             // No meta_title here — SeoService will fall back to default_meta_title from settings
             'canonical' => ($settings['canonical_base_url'] ?? '') !== '' ? rtrim($settings['canonical_base_url'], '/') . '/' : null,
         ]);
 
-        View::render('projects/index', compact('projects', 'total', 'seo', 'page', 'perPage', 'totalPages', 'tags'));
+        View::render('projects/index', compact('projects', 'total', 'seo', 'page', 'perPage', 'totalPages', 'tags', 'tagSlug'));
     }
 
     public function show(string $slug): void

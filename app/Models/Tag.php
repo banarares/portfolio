@@ -8,6 +8,24 @@ final class Tag extends Model
 {
     protected string $table = 'tags';
 
+    public function allUsedByUser(int $userId): array
+    {
+        return $this->query(
+            "SELECT DISTINCT t.id, t.name, t.slug
+            FROM {$this->table} t
+            INNER JOIN projects_tags pt ON pt.tag_id = t.id
+            INNER JOIN projects p ON p.id = pt.project_id
+            WHERE t.user_id = :user_id
+            AND t.deleted_at IS NULL
+            AND p.user_id = :user_id2
+            AND p.deleted_at IS NULL
+            AND p.published_at IS NOT NULL
+            AND p.published_at <= NOW()
+            ORDER BY t.name ASC",
+            ['user_id' => $userId, 'user_id2' => $userId]
+        )->fetchAll();
+    }
+
     public function findByUser(int $userId, int $id): ?array
     {
         $row = $this->query(
